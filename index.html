@@ -52,40 +52,7 @@
                     <h2 id="typewriter-subtitle" class="text-2xl md:text-3xl font-semibold mb-6 min-h-[2.5rem]"></h2>
                     <p id="typewriter-desc" class="text-lg mb-8 max-w-lg min-h-[3.5rem]"></p>
                     <script>
-                        // Typewriter effect for multiple lines
-                        function typeWriter(element, html, speed = 35, callback) {
-                            let i = 0;
-                            function typing() {
-                                if (i <= html.length) {
-                                    element.innerHTML = html.slice(0, i) + '<span class="border-r-2 border-yellow-300 animate-pulse"></span>';
-                                    i++;
-                                    setTimeout(typing, speed);
-                                } else {
-                                    element.innerHTML = html; // Remove cursor
-                                    if (callback) callback();
-                                }
-                            }
-                            typing();
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const title = document.getElementById('typewriter-title');
-                            const subtitle = document.getElementById('typewriter-subtitle');
-                            const desc = document.getElementById('typewriter-desc');
-                            const titleHtml = 'Bonjour, je suis <span class="text-yellow-300">AMOUSSA Sayidi</span>';
-                            const subtitleHtml = 'Développeur Full Stack';
-                            const descHtml = 'Je crée des applications web performantes et évolutives avec les dernières technologies. Passionné par le code propre et les solutions innovantes.';
-
-                            typeWriter(title, titleHtml, 35, () => {
-                                setTimeout(() => {
-                                    typeWriter(subtitle, subtitleHtml, 30, () => {
-                                        setTimeout(() => {
-                                            typeWriter(desc, descHtml, 18);
-                                        }, 200);
-                                    });
-                                }, 200);
-                            });
-                        });
+                        
                     </script>
                     <div class="flex space-x-4">
                         <a href="#contact" class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300 shadow-lg">Me contacter</a>
@@ -590,25 +557,50 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <div class="animate-fade-in" style="animation-delay: 0.2s;">
-                    <form class="space-y-6">
+                    <form class="space-y-6" id="whatsapp-contact-form">
                         <div>
                             <label for="name" class="block mb-2 font-medium">Votre nom</label>
-                            <input type="text" id="name" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Jean Dupont">
+                            <input type="text" id="name" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Jean Dupont" required>
                         </div>
                         <div>
                             <label for="email" class="block mb-2 font-medium">Votre email</label>
-                            <input type="email" id="email" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="jean@exemple.com">
+                            <input type="email" id="email" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="jean@exemple.com" required>
                         </div>
                         <div>
                             <label for="subject" class="block mb-2 font-medium">Sujet</label>
-                            <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Proposition de projet">
+                            <input type="text" id="subject" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Proposition de projet" required>
                         </div>
                         <div>
                             <label for="message" class="block mb-2 font-medium">Votre message</label>
-                            <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Décrivez votre projet en quelques mots..."></textarea>
+                            <textarea id="message" rows="5" class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-10 border border-white border-opacity-20 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 placeholder-white placeholder-opacity-70" placeholder="Décrivez votre projet en quelques mots..." required></textarea>
                         </div>
                         <button type="submit" class="w-full bg-white text-primary px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition duration-300 shadow-lg">Envoyer le message</button>
                     </form>
+                    <div id="form-alert" class="hidden mt-6 p-4 rounded-lg bg-green-600 bg-opacity-90 text-white text-center font-semibold shadow-lg">
+                        Merci pour votre message !
+                    </div>
+                    <script>
+                        document.getElementById('whatsapp-contact-form').addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            const name = document.getElementById('name').value.trim();
+                            const email = document.getElementById('email').value.trim();
+                            const subject = document.getElementById('subject').value.trim();
+                            const message = document.getElementById('message').value.trim();
+                            const phone = '22951563219';
+                            const text = `Bonjour, je m'appelle ${name} (%0AEmail: ${email})%0ASujet: ${subject}%0AMessage: ${message}`;
+                            const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+                            // Affiche l'alerte
+                            document.getElementById('form-alert').classList.remove('hidden');
+                            // Ouvre WhatsApp dans un nouvel onglet
+                            window.open(url, '_blank');
+                            // Optionnel: reset le formulaire
+                            this.reset();
+                            // Masquer l'alerte après 4 secondes
+                            setTimeout(() => {
+                                document.getElementById('form-alert').classList.add('hidden');
+                            }, 4000);
+                        });
+                    </script>
                 </div>
                 
                 <div class="animate-fade-in" style="animation-delay: 0.4s;">
@@ -672,7 +664,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
                     <a href="#" class="text-xl font-bold text-white">DEV<span class="text-primary">FULLSTACK</span></a>
-                    <p class="text-gray-400 mt-2">© 2023 Tous droits réservés</p>
+                    <p class="text-gray-400 mt-2">© 2025 Tous droits réservés</p>
                 </div>
                 <div class="flex space-x-6">
                     <a href="#accueil" class="text-gray-400 hover:text-white transition duration-300">Accueil</a>
@@ -683,7 +675,7 @@
                 </div>
             </div>
             <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-                <p>Conçu et développé avec <i class="fas fa-heart text-red-400"></i> par [Votre Nom]</p>
+                <p>Conçu et développé </i> par AMOUSSA Sayidi</p>
             </div>
         </div>
     </footer>
